@@ -16,8 +16,18 @@ todays_date = date.today().strftime("%Y%m%d")
 
 #--- SETUP ---
 chrome_options = Options()
-chrome_options.add_argument("--headless=new")
-chrome_options.add_experimental_option("detach", True)
+
+# 1. Essential arguments for a headless Linux server running as root:
+chrome_options.add_argument("--headless=new") 
+chrome_options.add_argument("--no-sandbox")        
+chrome_options.add_argument("--disable-dev-shm-usage") 
+chrome_options.add_argument("--disable-gpu")
+chrome_options.add_argument("window-size=1920x1080") # Specify a window size for consistent rendering
+
+# 2. Keep the detach option (though it's less necessary with proper termination)
+chrome_options.add_experimental_option("detach", True) 
+
+# 3. Initialize the driver
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
 driver.get(f"https://www.espn.com/nba/scoreboard/_/date/{todays_date}")
 time.sleep(5)
