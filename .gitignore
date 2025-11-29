@@ -1,0 +1,7 @@
+.env
+supabase_schema.sql
+requirements.txt
+DEPLOYMENT_GUIDE.md
+FINAL_GAMES_FEATURE.md
+SCHEMA_DESIGN.md
+SETUP_GUIDE.md
