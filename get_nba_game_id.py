@@ -25,6 +25,9 @@ todays_date = date.today().strftime("%Y%m%d")
 #--- SETUP ---
 chrome_options = Options()
 
+# ⚠️ FIX for Render: Explicitly tell Selenium where the Chrome binary is located
+chrome_options.binary_location = "/usr/bin/google-chrome" # 👈 Add this line 
+
 # 1. Essential arguments for a headless Linux server:
 chrome_options.add_argument("--headless=new") 
 chrome_options.add_argument("--no-sandbox")        
