@@ -19,8 +19,8 @@ GAME_START_TIME_FILE = os.path.join(BASE_DIR, 'game_start_time.txt')
 game_ids_file_handle = None
 
 
-# todays_date = date.today().strftime("%Y%m%d")
-todays_date = 20251130
+todays_date = date.today().strftime("%Y%m%d")
+
 
 #--- SETUP ---
 chrome_options = Options()
