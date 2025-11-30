@@ -31,12 +31,15 @@ chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--disable-dev-shm-usage") 
 chrome_options.add_argument("--disable-gpu")
 chrome_options.add_argument("window-size=1920x1080")
+chrome_options.add_argument("--disable-extensions")
+chrome_options.add_argument("--disable-features=NetworkService")
 
 # 2. Keep the detach option
 chrome_options.add_experimental_option("detach", True) 
 
 # 3. Initialize the driver
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+service = Service(ChromeDriverManager().install(), service_args=['--read-timeout=600']) 
+driver = webdriver.Chrome(service=service, options=chrome_options)
 driver.get(f"https://www.espn.com/nba/scoreboard/_/date/{todays_date}")
 time.sleep(5)
 
@@ -115,4 +118,3 @@ except Exception as e:
 
 finally:
     driver.quit()
-    
