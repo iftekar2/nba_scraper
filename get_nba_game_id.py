@@ -1,6 +1,5 @@
 import time
 from datetime import date
-import os
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
@@ -9,47 +8,23 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import NoSuchElementException
 
 
-# --- PATH SETUP (STEP 2 & 3) ---
-# Get the absolute path to the directory where this script resides.
-BASE_DIR = os.path.dirname(os.path.abspath(__file__)) 
-
-# Define file paths using the absolute BASE_DIR.
-GAME_IDS_FILE = os.path.join(BASE_DIR, 'game_id.txt')
-GAME_START_TIME_FILE = os.path.join(BASE_DIR, 'game_start_time.txt')
+GAME_IDS_FILE = 'game_id.txt'
 game_ids_file_handle = None
 
 
 todays_date = date.today().strftime("%Y%m%d")
 
-
 #--- SETUP ---
 chrome_options = Options()
-
-# ⚠️ FIX for Render: Explicitly tell Selenium where the Chrome binary is located
-chrome_options.binary_location = "/usr/bin/google-chrome" # 👈 Add this line 
-
-# 1. Essential arguments for a headless Linux server:
-chrome_options.add_argument("--headless=new") 
-chrome_options.add_argument("--no-sandbox")        
-chrome_options.add_argument("--disable-dev-shm-usage") 
-chrome_options.add_argument("--disable-gpu")
-chrome_options.add_argument("window-size=1920x1080")
-chrome_options.add_argument("--disable-extensions")
-chrome_options.add_argument("--disable-features=NetworkService")
-
-# 2. Keep the detach option
-chrome_options.add_experimental_option("detach", True) 
-
-# 3. Initialize the driver
-service = Service(ChromeDriverManager().install(), service_args=['--read-timeout=600']) 
-driver = webdriver.Chrome(service=service, options=chrome_options)
+chrome_options.add_argument("--headless=new")
+chrome_options.add_experimental_option("detach", True)
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
 driver.get(f"https://www.espn.com/nba/scoreboard/_/date/{todays_date}")
 time.sleep(5)
 
 
 try: 
     # Open the file once in 'w' (write/overwrite) mode
-    # NOTE: GAME_IDS_FILE is now an absolute path.
     game_ids_file_handle = open(GAME_IDS_FILE, 'w', encoding='utf-8')
     print(f"Opened file '{GAME_IDS_FILE}' for writing game IDs.")
 
@@ -74,7 +49,7 @@ except Exception as e:
     print(f"An unexpected error occurred: {e}")
 
 #--- Set scraper to start time ---
-# GAME_START_TIME_FILE is now an absolute path.
+GAME_START_TIME_FILE = 'game_start_time.txt'
 
 try:
     # Find the time element
@@ -108,7 +83,6 @@ try:
             hour = 0
         
         # Write to file in format "HH:MM"
-        # NOTE: GAME_START_TIME_FILE is now an absolute path.
         with open(GAME_START_TIME_FILE, 'w') as f:
             f.write(f"{hour:02d}:{minute:02d}")
         
